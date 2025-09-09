@@ -5,7 +5,7 @@ import axios from "axios";
 import { Pagination, Modal, Card, Skeleton } from "antd";
 import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
-import styles from "./Estudante.module.css";
+import styles from "./Country.module.css";
 
 const PAGE_SIZE_OPTIONS = ["5", "10", "20"];
 
@@ -23,11 +23,21 @@ export default function Paises() {
     loading: false,
   });
 
+  const [imageLoading, setImageLoading] = useState({});
+
+const handleImageLoad = (paisId) => {
+  setImageLoading(prev => ({...prev, [paisId]: false}));
+};
+
   useEffect(() => {
     const fetchPaises = async () => {
       try {
-        const response = await axios.get("https://api.sampleapis.com/countries/countries");
-        const paisesOrdenados = response.data.sort((a, b) => a.name.localeCompare(b.name));
+        const response = await axios.get(
+          "https://api.sampleapis.com/countries/countries"
+        );
+        const paisesOrdenados = response.data.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
         setData((d) => ({
           ...d,
           paises: paisesOrdenados,
@@ -56,7 +66,7 @@ export default function Paises() {
     return data.paises.slice(start, start + data.pageSize);
   };
 
-  const defaultFlag = "https://via.placeholder.com/220x140.png?text=Flag+Not+Available";
+  const defaultFlag = "/default-flag.png";
 
   return (
     <div className={styles.container}>
@@ -68,38 +78,70 @@ export default function Paises() {
           current={data.current}
           pageSize={data.pageSize}
           total={data.paises.length}
-          onChange={(page, size) => setData((d) => ({ ...d, current: page, pageSize: size }))}
+          onChange={(page, size) =>
+            setData((d) => ({ ...d, current: page, pageSize: size }))
+          }
           showSizeChanger
           pageSizeOptions={PAGE_SIZE_OPTIONS}
         />
 
         {data.loading ? (
-          <Image src="/images/loading.gif" width={300} height={200} alt="Loading" />
+          <Image
+            src="/images/loading.gif"
+            width={300}
+            height={200}
+            alt="Loading"
+          />
         ) : (
           <div className={styles.cardsContainer}>
             {paginatedPaises().map((pais) => (
-              <Card
-                key={pais.id}
-                className={styles.card}
-                hoverable
-                onClick={() => openModal(pais)}
-                cover={
-                    <img
-                    alt={pais.name}
-                    src={pais.media?.flag || defaultFlag}
-                    width={220}
-                    height={140}
-                    style={{ objectFit: "cover" }}
-                  />
-                  
-                }
-              >
-                <Card.Meta
-                  title={pais.name}
-                  description={`Capital: ${pais.capital || "N/A"}`}
-                />
-              </Card>
-            ))}
+  <Card
+    key={pais.id}
+    className={styles.card}
+    hoverable
+    onClick={() => openModal(pais)}
+    cover={
+      <>
+        {imageLoading[pais.id] !== false && (
+          <div style={{ position: 'absolute', width: '100%', height: '140px' }}>
+            <Skeleton.Image 
+              active 
+              style={{ 
+                width: '100%', 
+                height: '140px',
+                borderRadius: '8px 8px 0 0'
+              }} 
+            />
+          </div>
+        )}
+        <img
+          alt={pais.name}
+          src={pais.media?.flag || defaultFlag}
+          width={220}
+          height={140}
+          style={{
+            objectFit: "cover",
+            background: "#f5f5f5",
+            borderRadius: '8px 8px 0 0',
+            opacity: imageLoading[pais.id] !== false ? 0 : 1,
+            transition: 'opacity 0.3s'
+          }}
+          onLoad={() => handleImageLoad(pais.id)}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = defaultFlag;
+            handleImageLoad(pais.id);
+          }}
+        />
+      </>
+    }
+  >
+    <Card.Meta
+      title={pais.name}
+      description={`Capital: ${pais.capital || "N/A"}`}
+    />
+  </Card>
+))}
           </div>
         )}
       </div>
@@ -129,19 +171,42 @@ export default function Paises() {
             </p>
             <p>
               <strong>População:</strong>{" "}
-              {modalInfo.pais.population ? modalInfo.pais.population.toLocaleString() : "N/A"}
+              {modalInfo.pais.population
+                ? modalInfo.pais.population.toLocaleString()
+                : "N/A"}
             </p>
             <p>
-              <strong>Bandeira:</strong>
-            </p>
-            <img
-             alt={pais.name}
-             src={pais.media?.flag || defaultFlag}
-             width={220}
-             height={140}
-             style={{ objectFit: "cover" }}
-            />
-
+  <strong>Bandeira:</strong>
+</p>
+{imageLoading[modalInfo.pais?.id] !== false && (
+  <Skeleton.Image 
+    active 
+    style={{ 
+      width: '220px', 
+      height: '140px',
+      borderRadius: '8px'
+    }} 
+  />
+)}
+<img
+  alt={modalInfo.pais.name}
+  src={modalInfo.pais.media?.flag || defaultFlag}
+  width={220}
+  height={140}
+  style={{
+    objectFit: "cover",
+    background: "#f5f5f5",
+    borderRadius: "8px",
+    opacity: imageLoading[modalInfo.pais?.id] !== false ? 0 : 1,
+    transition: 'opacity 0.3s'
+  }}
+  onLoad={() => handleImageLoad(modalInfo.pais.id)}
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = defaultFlag;
+    handleImageLoad(modalInfo.pais.id);
+  }}
+/>
           </div>
         ) : (
           <p style={{ textAlign: "center" }}>Detalhes não disponíveis.</p>
