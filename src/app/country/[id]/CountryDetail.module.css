@@ -1,0 +1,172 @@
+.container {
+  min-height: 100vh;
+  padding: 3% 5%;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7)),
+              url("https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?ixlib=rb-4.0.3");
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(10px);
+  border-radius: 25px;
+  padding: 3rem;
+  width: 90%;
+  max-width: 900px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: rgba(52, 152, 219, 0.1);
+}
+
+.backButton:hover {
+  color: #2980b9;
+  background: rgba(52, 152, 219, 0.2);
+  transform: translateX(-5px);
+}
+
+.card h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  margin: 2rem 0;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.flag {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  transition: all 0.5s ease;
+}
+
+.flag:hover {
+  transform: scale(1.03);
+}
+
+.skeleton {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 20px;
+}
+
+.info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #2c3e50;
+}
+
+.info p {
+  background: rgba(52, 152, 219, 0.05);
+  padding: 1.2rem;
+  border-radius: 12px;
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+.info p:hover {
+  background: rgba(52, 152, 219, 0.1);
+  transform: translateY(-3px);
+}
+
+.info strong {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem;
+  }
+  
+  .card {
+    padding: 2rem;
+  }
+  
+  .card h1 {
+    font-size: 2rem;
+  }
+  
+  .imageContainer {
+    height: 300px;
+  }
+  
+  .info {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .info p {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .card {
+    padding: 1.5rem;
+  }
+  
+  .card h1 {
+    font-size: 1.8rem;
+  }
+  
+  .imageContainer {
+    height: 200px;
+  }
+  
+  .backButton {
+    font-size: 1rem;
+  }
+}
