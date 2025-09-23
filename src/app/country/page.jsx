@@ -76,7 +76,7 @@ export default function Paises() {
           <Image
             src="/images/loading.gif"
             width={300}
-            height={200}
+            height={200}  
             alt="Loading"
           />
         ) : (
