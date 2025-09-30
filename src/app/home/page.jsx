@@ -17,13 +17,19 @@ export default function Home() {
                 />
                 <h2>Caio Gabriel Lacerda Silva</h2>
                 <h2>Turma: 2TDS1</h2>
+                <h2>SENAI Valinhos</h2>
                 <h3>Instrutores: Thiago e Marcelo</h3>
                 <h4>Minha API permite buscar informações detalhadas sobre países ao redor do mundo, incluindo dados populacionais, 
                     regionais, bandeiras, idiomas, entre outros.</h4>
                 <p className={styles.quote}>"Conhecer o mundo é expandir seus horizontes. Cada país tem uma história para contar."</p>
+                <div className={styles.buttons}>
                 <Link href="/country" prefetch>
+                    <Button title="Listagem países" />
+                </Link>
+                <Link href="/sobreapi" prefetch>
                     <Button title="Acessar minha API" />
                 </Link>
+                </div>
             </div>
         </div>
     );
